@@ -4,11 +4,13 @@ import com.clokkwork.endlessfreeze.entities.FrostCoreModel;
 import com.clokkwork.endlessfreeze.entities.FrostCoreRenderer;
 import com.clokkwork.endlessfreeze.items.BiomeChanger;
 import com.clokkwork.endlessfreeze.entities.FrostCore;
+import com.clokkwork.endlessfreeze.misc.FrostflameEff;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.SnowGolem;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WitherRoseBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -58,6 +61,11 @@ public class EndlessFreezeMod
     // Create a Deferred Register to hold EntityTypes which will all be registered under the "endlessfreeze" namespace
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
 
+    // Create a Deferred Register to hold MobEffects which will all be registered under the "endlessfreeze" namespace
+    public static final DeferredRegister<MobEffect> POTIONS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MODID);
+
+    public static final RegistryObject<MobEffect> FROSTFLAME_EFFECT = POTIONS.register("frostflame", FrostflameEff::new);
+
     // Creates a new Block with the id "endlessfreeze:example_block", combining the namespace and path
     public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
     // Creates a new BlockItem with the id "endlessfreeze:example_block", combining the namespace and path
@@ -96,6 +104,8 @@ public class EndlessFreezeMod
         CREATIVE_MODE_TABS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so entities get registered
         ENTITIES.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so potions get registered
+        POTIONS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
