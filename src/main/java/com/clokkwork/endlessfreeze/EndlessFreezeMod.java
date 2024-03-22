@@ -1,19 +1,14 @@
 package com.clokkwork.endlessfreeze;
 
-import com.clokkwork.endlessfreeze.entities.FrostCoreModel;
-import com.clokkwork.endlessfreeze.entities.FrostCoreRenderer;
+import com.clokkwork.endlessfreeze.entities.*;
 import com.clokkwork.endlessfreeze.items.BiomeChanger;
-import com.clokkwork.endlessfreeze.entities.FrostCore;
 import com.clokkwork.endlessfreeze.misc.FrostflameEff;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,7 +16,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WitherRoseBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -73,6 +67,7 @@ public class EndlessFreezeMod
 
     // Creates a new EntityType with the id "endlessfreeze:frost_core", combining the namespace and path
     public static final RegistryObject<EntityType<FrostCore>> FROST_CORE = ENTITIES.register("frost_core", () -> EntityType.Builder.of(FrostCore::new, MobCategory.MONSTER).sized(0.6f, 1.95f).build("frost_core"));
+    public static final RegistryObject<EntityType<Frostling>> FROSTLING = ENTITIES.register("frostling", () -> EntityType.Builder.of(Frostling::new, MobCategory.MONSTER).sized(0.6f, 1.95f).build("frostling"));
 
     // Creates a new food item with the id "endlessfreeze:example_id", nutrition 1 and saturation 2
     public static final RegistryObject<Item> EXAMPLE_ITEM = ITEMS.register("example_item", () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
@@ -164,6 +159,7 @@ public class EndlessFreezeMod
             // Register entity renderers
             LOGGER.info("HELLO from register renderers");
             event.registerEntityRenderer(FROST_CORE.get(), FrostCoreRenderer::new);
+            event.registerEntityRenderer(FROSTLING.get(), FrostlingRenderer::new);
         }
 
         @SubscribeEvent
@@ -171,6 +167,7 @@ public class EndlessFreezeMod
             // Register entity model layers
             LOGGER.info("HELLO from entity model layer registration");
             event.registerLayerDefinition(FrostCoreModel.LAYER_LOCATION, FrostCoreModel::createBodyLayer);
+            event.registerLayerDefinition(FrostlingModel.LAYER_LOCATION, FrostlingModel::createBodyLayer);
         }
 
         @SubscribeEvent
@@ -178,6 +175,7 @@ public class EndlessFreezeMod
             // Register entity attributes
             LOGGER.info("HELLO from entity attribute creation event");
             event.put(FROST_CORE.get(), FrostCore.createAttributes().build());
+            event.put(FROSTLING.get(), Frostling.createAttributes().build());
         }
     }
 }

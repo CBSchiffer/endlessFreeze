@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FrostCore extends Monster {
+public class FrostCore extends FrostMob {
     private double pointsBank = 0.0D;
     private double corruptionRadius = 1.0D;
     private double pointsRequired = corruptionRadius;
